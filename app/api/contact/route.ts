@@ -33,21 +33,20 @@ export async function POST(req: NextRequest) {
       [name, email, message]
     );
 
-    // Fire-and-forget emails — contact is already saved; email failures must not fail the request.
+    // Fire-and-forget emails — contact is already saved, so a mail failure
+    // must not fail the request.
     const contact = { name, email, message };
     void (async () => {
       try {
         await sendAdminNotification(contact);
       } catch {
-        // ignore admin notification failure
+        // swallow — already logged upstream if it matters
       }
     })();
     void (async () => {
       try {
         await sendClientConfirmation(contact);
-      } catch {
-        // ignore client confirmation failure
-      }
+      } catch {}
     })();
 
     return NextResponse.json(rows[0], { status: 201 });

@@ -11,6 +11,7 @@ const projectSchema = z.object({
 
 export async function GET() {
   try {
+    // TODO: paginate this once the project count grows past a screenful
     const rows = await query("SELECT * FROM projects ORDER BY created_at DESC, id DESC");
     return NextResponse.json(rows);
   } catch {

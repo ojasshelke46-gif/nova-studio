@@ -37,3 +37,47 @@ export async function sendClientConfirmation(contact: ContactPayload) {
     text: `Hi ${contact.name}, thanks for reaching out. We've received your inquiry and will get back to you within 24 hours. — Nova Studio`,
   });
 }
+
+function formatSlotTime(date: Date): string {
+  return date.toLocaleString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
+export async function sendPrepEmail(
+  contact: { name: string; email: string },
+  emailBody: string
+) {
+  const resend = getClient();
+  if (!resend) throw new Error("Resend not configured");
+
+  await resend.emails.send({
+    from: FROM,
+    to: contact.email,
+    subject: "A few questions before our meeting — Nova Studio",
+    text: emailBody,
+  });
+}
+
+export async function sendBookingConfirmation(
+  contact: { name: string; email: string },
+  slotTime: Date
+) {
+  const resend = getClient();
+  if (!resend) return;
+
+  const formatted = formatSlotTime(slotTime);
+
+  await resend.emails.send({
+    from: FROM,
+    to: contact.email,
+    subject: "Meeting confirmed — Nova Studio",
+    text: `Hi ${contact.name},\n\nYour meeting with Nova Studio is confirmed for ${formatted}.\n\nWe'll send a few questions beforehand to make the most of our time together.\n\nSee you then,\nNova Studio`,
+  });
+}

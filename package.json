@@ -7,13 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "npx ts-node scripts/seed.ts"
+    "seed": "npx ts-node scripts/seed.ts",
+    "seed:slots": "npx ts-node scripts/seedSlots.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
+    "@types/dotenv": "^6.1.1",
+    "dotenv": "^17.4.2",
     "framer-motion": "^12.40.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.0",

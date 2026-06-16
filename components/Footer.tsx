@@ -12,7 +12,7 @@ function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 }
 
-export default function Footer() {
+const Footer = () => {
   return (
     <Box
       component="footer"
@@ -54,4 +54,6 @@ export default function Footer() {
       </Box>
     </Box>
   );
-}
+};
+
+export default Footer;

@@ -29,6 +29,8 @@ function validate(form: FormState): FormErrors {
   return errors;
 }
 
+// TODO: could extract this into a shared util — same field styling shows up
+// in the intake flow and the admin login form too.
 const fieldSx = {
   "& .MuiInput-root": {
     backgroundColor: "transparent",

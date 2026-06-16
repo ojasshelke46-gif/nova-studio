@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const submitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSubmitting(true);
@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
     >
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={submitLogin}
         sx={{
           width: "100%",
           maxWidth: 380,

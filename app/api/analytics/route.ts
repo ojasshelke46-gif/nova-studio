@@ -33,8 +33,8 @@ export async function GET() {
   try {
     await connectMongo();
 
+    // TODO: paginate instead of a hard 100-row cap — dashboard will need older events eventually
     const events = await Event.find().sort({ createdAt: -1 }).limit(100).lean();
-
     return NextResponse.json(events);
   } catch {
     return serverErrorResponse();

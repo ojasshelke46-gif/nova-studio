@@ -68,20 +68,21 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
       </Box>
 
       {/* Grid */}
-      <Box
-        component={motion.div}
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
         variants={container}
-        sx={{
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
-          gap: "24px",
-        }}
       >
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
+            gap: "24px",
+          }}
+        >
         {filtered.map((project) => (
-          <Box key={project.id} component={motion.div} variants={item} sx={{ overflow: "hidden" }}>
+          <motion.div key={project.id} variants={item} style={{ overflow: "hidden" }}>
             <Box
               sx={{
                 position: "relative",
@@ -115,9 +116,10 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
                 {project.category}
               </Box>
             </Box>
-          </Box>
+          </motion.div>
         ))}
-      </Box>
+        </Box>
+      </motion.div>
     </>
   );
 }
