@@ -71,8 +71,7 @@ export default function Hero() {
         {/* Overline */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease }}
         >
           <Box
@@ -91,8 +90,7 @@ export default function Hero() {
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.15 }}
         >
           <Box
@@ -124,8 +122,7 @@ export default function Hero() {
         {/* Subheading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.45 }}
         >
           <Box
@@ -148,8 +145,7 @@ export default function Hero() {
         {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.55 }}
         >
           <Box
@@ -199,8 +195,7 @@ export default function Hero() {
         {/* Trust metrics */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.75 }}
         >
           <Box
