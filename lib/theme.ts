@@ -37,6 +37,21 @@ const theme = createTheme({
   shadows: Array(25).fill("none") as unknown as ReturnType<
     typeof createTheme
   >["shadows"],
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: {
+          scrollBehavior: "smooth",
+          // avoid horizontal jiggle from scrollbar appearing/disappearing
+          scrollbarGutter: "stable",
+        },
+        body: {
+          backgroundColor: colors.background,
+          overflowX: "hidden",
+        },
+      },
+    },
+  },
 });
 
 export default theme;
