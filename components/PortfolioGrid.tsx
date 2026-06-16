@@ -70,8 +70,7 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
       {/* Grid */}
       <motion.div
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
+        animate="visible"
         variants={container}
       >
         <Box
