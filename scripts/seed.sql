@@ -40,9 +40,9 @@ INSERT INTO stats (label, value) VALUES
 ('Years Experience', 5);
 
 INSERT INTO projects (title, category, image_url) VALUES
-('Meridian Finance', 'Web Design', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop'),
-('Kuro Streetwear', 'Branding', 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=600&fit=crop'),
-('Apex Dashboard', 'Development', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop'),
-('Nomad Travel Co', 'Web Design', 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=600&fit=crop'),
-('Volt Energy', 'Branding', 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&h=600&fit=crop'),
-('CloudSync SaaS', 'Development', 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=600&fit=crop');
+('Meridian Finance', 'Web Design', '/portfolio/meridian-finance.png'),
+('Kuro Streetwear', 'Branding', '/portfolio/kuro-streetwear.png'),
+('Apex Dashboard', 'Development', '/portfolio/apex-dashboard.png'),
+('Nomad Travel Co', 'Web Design', '/portfolio/nomad-travel.png'),
+('Volt Energy', 'Branding', '/portfolio/volt-energy.png'),
+('CloudSync SaaS', 'Development', '/portfolio/cloudsync-saas.png');
