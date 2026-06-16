@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { colors } from "@/lib/theme";
-import ContactForm from "./ContactForm";
+import ContactPanel from "./ContactPanel";
 
 export default function Contact() {
   return (
@@ -72,7 +72,7 @@ export default function Contact() {
 
         {/* Right column */}
         <Box sx={{ width: { xs: "100%", md: "45%" } }}>
-          <ContactForm />
+          <ContactPanel />
         </Box>
       </Box>
     </Box>
