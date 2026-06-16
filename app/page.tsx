@@ -9,6 +9,10 @@ import Footer from "@/components/Footer";
 import PageView from "@/components/PageView";
 import { ServicesSkeleton, PortfolioSkeleton, StatsSkeleton } from "@/components/Skeletons";
 
+// Render per request so admin edits to projects/services/stats show up
+// without needing a rebuild. The DB reads happen in the section components.
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <>
