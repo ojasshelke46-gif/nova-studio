@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { getBaseUrl } from "@/lib/getBaseUrl";
+import { query } from "@/lib/db";
 import { colors } from "@/lib/theme";
 
 interface Service {
@@ -10,9 +10,7 @@ interface Service {
 
 async function getServices(): Promise<Service[]> {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/services`, { cache: "no-store" });
-    if (!res.ok) return [];
-    return await res.json();
+    return await query<Service>("SELECT * FROM services ORDER BY id ASC");
   } catch {
     return [];
   }

@@ -1,11 +1,9 @@
-import { getBaseUrl } from "@/lib/getBaseUrl";
+import { query } from "@/lib/db";
 import StatsGrid, { type Stat } from "./StatsGrid";
 
 async function getStats(): Promise<Stat[]> {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/stats`, { cache: "no-store" });
-    if (!res.ok) return [];
-    return await res.json();
+    return await query<Stat>("SELECT * FROM stats ORDER BY id ASC");
   } catch {
     return [];
   }

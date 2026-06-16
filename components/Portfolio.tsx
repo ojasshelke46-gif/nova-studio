@@ -1,13 +1,13 @@
 import { Box } from "@mui/material";
-import { getBaseUrl } from "@/lib/getBaseUrl";
+import { query } from "@/lib/db";
 import { colors } from "@/lib/theme";
 import PortfolioGrid, { type Project } from "./PortfolioGrid";
 
 async function getProjects(): Promise<Project[]> {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/projects`, { cache: "no-store" });
-    if (!res.ok) return [];
-    return await res.json();
+    return await query<Project>(
+      "SELECT * FROM projects ORDER BY created_at DESC, id DESC"
+    );
   } catch {
     return [];
   }
