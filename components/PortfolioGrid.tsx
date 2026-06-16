@@ -18,15 +18,11 @@ export interface Project {
 const FILTERS = ["All", "Web Design", "Branding", "Development"];
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease } },
 };
 
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
-};
 
 export default function PortfolioGrid({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState("All");
@@ -68,20 +64,22 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
       </Box>
 
       {/* Grid */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={container}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
+          gap: "24px",
+        }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
-            gap: "24px",
-          }}
-        >
         {filtered.map((project) => (
-          <motion.div key={project.id} variants={item} style={{ overflow: "hidden" }}>
+          <motion.div
+            key={project.id}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0 }}
+            variants={cardVariants}
+            style={{ overflow: "hidden" }}
+          >
             <Box
               sx={{
                 position: "relative",
@@ -117,8 +115,7 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
             </Box>
           </motion.div>
         ))}
-        </Box>
-      </motion.div>
+      </Box>
     </>
   );
 }
