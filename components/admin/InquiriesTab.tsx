@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { colors } from "@/lib/theme";
 import { formatDate } from "@/lib/formatDate";
+import ContactAIPanel from "./ContactAIPanel";
 
 interface Contact {
   id: number;
@@ -133,9 +134,7 @@ export default function InquiriesTab() {
               <TableRow>
                 <TableCell sx={{ ...cellSx, py: 0 }} colSpan={6}>
                   <Collapse in={expanded === c.id} timeout="auto" unmountOnExit>
-                    <Box sx={{ py: 2, color: colors.textSecondary, fontSize: 14, lineHeight: 1.7 }}>
-                      {c.message}
-                    </Box>
+                    <ContactAIPanel contact={c} />
                   </Collapse>
                 </TableCell>
               </TableRow>
