@@ -13,7 +13,6 @@ interface CurrentQuestion {
   options: string[];
 }
 
-const MAX_QUESTIONS = 4;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ERROR_RED = "#EF4444";
 
@@ -45,21 +44,17 @@ const fade = {
 const fadeTrans = { duration: 0.25, ease: "easeInOut" as const };
 
 function ProgressDots({ current }: { current: number }) {
+  // The total number of questions is decided adaptively by the AI, so we show a
+  // simple step counter rather than a fixed "X of N" with a known total.
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: "8px", mb: "40px" }}>
-      {Array.from({ length: MAX_QUESTIONS }).map((_, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            width: i === current ? 24 : 8,
-            backgroundColor: i <= current ? colors.accent : "rgba(255,255,255,0.1)",
-          }}
-          transition={{ duration: 0.3 }}
-          style={{ height: 8, borderRadius: 4 }}
-        />
-      ))}
+      <motion.div
+        animate={{ width: 24, backgroundColor: colors.accent }}
+        transition={{ duration: 0.3 }}
+        style={{ height: 8, borderRadius: 4 }}
+      />
       <Box sx={{ ml: "4px", fontSize: 12, color: colors.textSecondary }}>
-        {current + 1} of {MAX_QUESTIONS}
+        Question {current + 1}
       </Box>
     </Box>
   );

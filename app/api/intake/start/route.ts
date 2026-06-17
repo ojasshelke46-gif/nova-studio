@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { query } from "@/lib/db";
 import { zodErrorResponse, serverErrorResponse, errorResponse } from "@/lib/api-error";
-import { generateIntakeQuestion, INTAKE_SYSTEM_PROMPT } from "@/lib/ai";
+import { generateIntakeQuestion, INTAKE_SYSTEM_PROMPT, FALLBACK_QUESTION } from "@/lib/ai";
 
 const startSchema = z.object({
   contact_id: z.number().int().positive(),
@@ -26,10 +26,15 @@ export async function POST(req: NextRequest) {
     const contacts = await query("SELECT id FROM contacts WHERE id = $1", [contact_id]);
     if (!contacts.length) return errorResponse("Contact not found", 404);
 
-    const { question, options } = await generateIntakeQuestion([
+    // The intake flow always opens with at least one question. If the AI judges
+    // the single initial message already "done" (or returns no usable question),
+    // fall back to a standard opener so the conversation still starts.
+    const first = await generateIntakeQuestion([
       { role: "system", content: INTAKE_SYSTEM_PROMPT },
       { role: "user", content: initialQuery },
     ]);
+    const question = first.question ?? FALLBACK_QUESTION.question;
+    const options = first.options ?? FALLBACK_QUESTION.options;
 
     const conversation = [
       { role: "user", content: initialQuery },
