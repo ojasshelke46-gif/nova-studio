@@ -51,6 +51,17 @@ A fictional digital agency platform built as a fullstack assignment. It goes bey
 
 The site runs on `http://localhost:3000`. Admin panel is at `/admin`.
 
+## Admin Login
+
+The admin panel (`/admin`) is protected. Use these demo credentials:
+
+| Field | Value |
+|---|---|
+| Username | `admin` |
+| Password | `admin123` |
+
+These are the default seed credentials for evaluation. Override them with the `ADMIN_USERNAME` / `ADMIN_PASSWORD` environment variables in a real deployment.
+
 ## Environment Variables
 
 | Variable | Description | Example |
