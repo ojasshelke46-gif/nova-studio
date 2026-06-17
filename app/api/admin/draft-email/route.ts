@@ -6,6 +6,7 @@ import { generateEmailDraft } from "@/lib/ai";
 
 const draftSchema = z.object({
   session_id: z.number().int().positive(),
+  instruction: z.string().optional(),
 });
 
 interface ReportRow {
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
     const parsed = draftSchema.safeParse(body);
     if (!parsed.success) return zodErrorResponse(parsed.error);
 
-    const { session_id } = parsed.data;
+    const { session_id, instruction } = parsed.data;
 
     const reports = await query<ReportRow>(
       "SELECT report_text, lead_score, proposal_draft FROM intake_reports WHERE session_id = $1 ORDER BY created_at DESC LIMIT 1",
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
     if (!reports.length) return errorResponse("No report found for this session. Run /api/intake/finalize first.", 404);
 
     const { report_text, proposal_draft } = reports[0];
-    const draft = await generateEmailDraft(report_text, proposal_draft);
+    const draft = await generateEmailDraft(report_text, proposal_draft, instruction);
 
     return NextResponse.json({ draft });
   } catch {
