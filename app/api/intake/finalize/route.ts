@@ -19,11 +19,19 @@ interface SessionRow {
   status: string;
 }
 
+interface ScoreBreakdown {
+  clarity: number;
+  urgency: number;
+  budget_signal: number;
+  decision_authority: number;
+}
+
 interface ReportRow {
   id: number;
   session_id: number;
   report_text: string;
   lead_score: number;
+  score_breakdown: ScoreBreakdown | null;
   proposal_draft: string;
   created_at: string;
 }
@@ -55,14 +63,13 @@ export async function POST(req: NextRequest) {
       if (existing.length) return NextResponse.json(existing[0]);
     }
 
-    const { report, lead_score, proposal_draft } = await generateIntakeReport(
-      session.conversation
-    );
+    const { report, lead_score, score_breakdown, proposal_draft } =
+      await generateIntakeReport(session.conversation);
 
     const reports = await query<ReportRow>(
-      `INSERT INTO intake_reports (session_id, report_text, lead_score, proposal_draft)
-       VALUES ($1, $2, $3, $4) RETURNING *`,
-      [session_id, report, lead_score, proposal_draft]
+      `INSERT INTO intake_reports (session_id, report_text, lead_score, score_breakdown, proposal_draft)
+       VALUES ($1, $2, $3, $4::jsonb, $5) RETURNING *`,
+      [session_id, report, lead_score, JSON.stringify(score_breakdown), proposal_draft]
     );
 
     await query(

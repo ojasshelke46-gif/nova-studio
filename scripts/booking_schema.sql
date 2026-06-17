@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS intake_reports (
   session_id INTEGER REFERENCES intake_sessions(id),
   report_text TEXT NOT NULL,
   lead_score INTEGER,
+  score_breakdown JSONB,
   proposal_draft TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );

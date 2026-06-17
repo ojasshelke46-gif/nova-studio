@@ -10,10 +10,18 @@ import {
 } from "@mui/material";
 import { colors } from "@/lib/theme";
 
+interface ScoreBreakdown {
+  clarity: number;
+  urgency: number;
+  budget_signal: number;
+  decision_authority: number;
+}
+
 interface Report {
   session_id: number;
   report_text: string;
   lead_score: number;
+  score_breakdown: ScoreBreakdown | null;
   proposal_draft: string;
 }
 
@@ -52,6 +60,67 @@ function LeadBadge({ score }: { score: number }) {
       }}
     >
       {label} · {score}/100
+    </Box>
+  );
+}
+
+const BREAKDOWN_LABELS: { key: keyof ScoreBreakdown; label: string }[] = [
+  { key: "clarity", label: "Clarity" },
+  { key: "urgency", label: "Urgency" },
+  { key: "budget_signal", label: "Budget" },
+  { key: "decision_authority", label: "Authority" },
+];
+
+function ScoreBreakdownBars({ breakdown }: { breakdown: ScoreBreakdown }) {
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        gap: "10px",
+        mt: "10px",
+        maxWidth: 360,
+      }}
+    >
+      {BREAKDOWN_LABELS.map(({ key, label }) => {
+        const value = breakdown[key];
+        const pct = Math.max(0, Math.min(100, (value / 25) * 100));
+        return (
+          <Box key={key}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: 10,
+                color: colors.textSecondary,
+                mb: "4px",
+              }}
+            >
+              <Box component="span">{label}</Box>
+              <Box component="span" sx={{ color: colors.textPrimary }}>
+                {value}/25
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                height: 4,
+                borderRadius: 2,
+                backgroundColor: "rgba(255,255,255,0.08)",
+                overflow: "hidden",
+              }}
+            >
+              <Box
+                sx={{
+                  width: `${pct}%`,
+                  height: "100%",
+                  borderRadius: 2,
+                  backgroundColor: colors.accent,
+                }}
+              />
+            </Box>
+          </Box>
+        );
+      })}
     </Box>
   );
 }
@@ -106,6 +175,7 @@ export default function ContactAIPanel({ contact }: { contact: Contact }) {
 
   // Email draft
   const [emailLoading, setEmailLoading] = useState(false);
+  const [emailInstruction, setEmailInstruction] = useState("");
   const [emailDraft, setEmailDraft] = useState<string | null>(null);
   const [emailSending, setEmailSending] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -164,7 +234,10 @@ export default function ContactAIPanel({ contact }: { contact: Contact }) {
       const res = await fetch("/api/admin/draft-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: report.session_id }),
+        body: JSON.stringify({
+          session_id: report.session_id,
+          instruction: emailInstruction.trim(),
+        }),
       });
       if (!res.ok) throw new Error();
       const { draft } = (await res.json()) as { draft: string };
@@ -237,6 +310,9 @@ export default function ContactAIPanel({ contact }: { contact: Contact }) {
           <Box sx={sectionLabelSx}>AI Intake Report</Box>
           <Box sx={{ mb: "12px" }}>
             <LeadBadge score={report.lead_score} />
+            {report.score_breakdown && (
+              <ScoreBreakdownBars breakdown={report.score_breakdown} />
+            )}
           </Box>
           <Box
             sx={{
@@ -403,6 +479,19 @@ export default function ContactAIPanel({ contact }: { contact: Contact }) {
           )}
 
           {emailDraft === null ? (
+            <>
+            <Box sx={{ mb: "10px" }}>
+              <TextField
+                variant="standard"
+                placeholder="Optional — tell the AI what to ask or focus on (e.g. 'ask about their timeline and budget range')"
+                value={emailInstruction}
+                onChange={(e) => setEmailInstruction(e.target.value)}
+                disabled={emailLoading}
+                fullWidth
+                size="small"
+                sx={chatInputSx}
+              />
+            </Box>
             <Box
               component="button"
               onClick={draftEmail}
@@ -432,6 +521,7 @@ export default function ContactAIPanel({ contact }: { contact: Contact }) {
               )}
               {emailLoading ? "Drafting..." : "Draft pre-meeting email"}
             </Box>
+            </>
           ) : (
             <Box>
               <TextField
